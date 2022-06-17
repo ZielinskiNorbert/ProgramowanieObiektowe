@@ -116,7 +116,7 @@ void board()
             for(int k=0; k<size; k++){
                 if(j==k)
                     continue;
-                if(zwierzeta[j]->getX()==zwierzeta[k]->getX()&&zwierzeta[j]->getY()==zwierzeta[k]->getY()){ //rozmnarzanie sie zwierzat
+                if(zwierzeta[j]->getX()==zwierzeta[k]->getX()&&zwierzeta[j]->getY()==zwierzeta[k]->getY()){ //rozmnażanie sie zwierzat
                     if(zwierzeta[j]->alive()&&zwierzeta[k]->alive()){
                     if(zwierzeta[j]->getZnak()==zwierzeta[k]->getZnak()){
                         switch (zwierzeta[j]->getZnak())
