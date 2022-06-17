@@ -27,14 +27,14 @@ void board()
 {
     std::vector<std::vector<char>> board(50, std::vector<char>(50, ' ')); //rozmiar planszy
 
-    std::cout << "Podaj dlugosc: ";
+    std::cout << "Prosze podac dlugosc symulacji: ";
     int ile;    //ile ma trwac symulacja
     std::fstream zapis_statystyk; 
     std::cin >> ile; //dlugosc trwania symualacji
 
     std::vector<animal *> zwierzeta;
 
-    for(int i=0; i<21;i++){ //rozlosowanie miejsc startowych i ilosci gatunkow
+    for(int i=0; i<24;i++){ //rozlosowanie miejsc startowych i ilosci gatunkow
         int wartosc=losowe();
         int start1=start(), start2=start();
        while (board[start1][start2] != ' ')
@@ -182,7 +182,7 @@ void board()
         std::this_thread::sleep_for(2ms);
 
     }}
-    system("pause");
+
     int ilosc_x_end=count_if(zwierzeta.begin(), zwierzeta.end(), [](animal *a){return a->getZnak()=='x';}); //zapisywanie ilosci zwierzat na koncu 
     int ilosc_W_end=count_if(zwierzeta.begin(), zwierzeta.end(), [](animal *a){return a->getZnak()=='w';});
     int ilosc_a_end=count_if(zwierzeta.begin(), zwierzeta.end(), [](animal *a){return a->getZnak()=='a';});
@@ -191,18 +191,27 @@ void board()
     int ilosc_m_end=count_if(zwierzeta.begin(), zwierzeta.end(), [](animal *a){return a->getZnak()=='m';});
     int ilosc_z_end=count_if(zwierzeta.begin(), zwierzeta.end(), [](animal *a){return a->getZnak()=='z';});
 
-    zapis_statystyk.open("statystyki.txt", std::ios::out | std::ios::app); //wpisywanie statystyk do pliku txt
+    zapis_statystyk.open("statystyki.txt", std::ios::out | std::ios::app); //wpisywanie statystyk do pliku txt i ich wypisywanie
     zapis_statystyk<<"Dlugosc symulacji: "<<ile<<std::endl;
+    std::cout<<"Dlugosc symulacji: "<<ile<<std::endl;
     zapis_statystyk<<"Wilka start: "<<ilosc_W_start<<" Wilk koniec: "<<ilosc_W_end<<std::endl;
-    zapis_statystyk<<"Mysz start: "<<ilosc_m_start<<" mysz koniec: "<<ilosc_m_end<<std::endl;
-    zapis_statystyk<<"Dzieciol start: "<<ilosc_x_start<<" dzeciol koniec: "<<ilosc_x_end<<std::endl;
-    zapis_statystyk<<"Mrowka start: "<<ilosc_a_start<<" mrowka koniec: "<<ilosc_a_end<<std::endl;
-    zapis_statystyk<<"Dzik start: "<<ilosc_B_start<<" dzik koniec: "<<ilosc_B_end<<std::endl;
-    zapis_statystyk<<"Jelen start: "<<ilosc_u_start<<" jelen koniec: "<<ilosc_u_end<<std::endl;
-    zapis_statystyk<<"zubr start: "<<ilosc_z_start<<" zubr koniec: "<<ilosc_z_end<<std::endl;
+    std::cout<<"Wilka start: "<<ilosc_W_start<<" Wilk koniec: "<<ilosc_W_end<<std::endl;
+    zapis_statystyk<<"Mysz start: "<<ilosc_m_start<<" Mysz koniec: "<<ilosc_m_end<<std::endl;
+    std::cout<<"Mysz start: "<<ilosc_m_start<<" Mysz koniec: "<<ilosc_m_end<<std::endl;
+    zapis_statystyk<<"Dzieciol start: "<<ilosc_x_start<<" Dzeciol koniec: "<<ilosc_x_end<<std::endl;
+    std::cout<<"Dzieciol start: "<<ilosc_x_start<<" Dzeciol koniec: "<<ilosc_x_end<<std::endl;
+    zapis_statystyk<<"Mrowka start: "<<ilosc_a_start<<" Mrowka koniec: "<<ilosc_a_end<<std::endl;
+    std::cout<<"Mrowka start: "<<ilosc_a_start<<" Mrowka koniec: "<<ilosc_a_end<<std::endl;
+    zapis_statystyk<<"Dzik start: "<<ilosc_B_start<<" Dzik koniec: "<<ilosc_B_end<<std::endl;
+    std::cout<<"Dzik start: "<<ilosc_B_start<<" Dzik koniec: "<<ilosc_B_end<<std::endl;
+    zapis_statystyk<<"Jelen start: "<<ilosc_u_start<<" Jelen koniec: "<<ilosc_u_end<<std::endl;
+    std::cout<<"Jelen start: "<<ilosc_u_start<<" Jelen koniec: "<<ilosc_u_end<<std::endl;
+    zapis_statystyk<<"zubr start: "<<ilosc_z_start<<" Zubr koniec: "<<ilosc_z_end<<std::endl;
+    std::cout<<"zubr start: "<<ilosc_z_start<<" Zubr koniec: "<<ilosc_z_end<<std::endl;
     zapis_statystyk<<std::endl;
 
     zapis_statystyk.close();
+    system("pause");
 }   
 
 int start()
@@ -239,3 +248,4 @@ int main()
 {
     board();
 }
+
