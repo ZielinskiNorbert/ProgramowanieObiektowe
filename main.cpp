@@ -5,6 +5,9 @@
 #include <chrono>
 #include <vector>
 #include <stdlib.h>
+#include <algorithm>
+#include <fstream>
+
 
 #include"animals/animal.h"
 #include"animals/ant.h"
@@ -22,15 +25,16 @@ void board();
 
 void board()
 {
-    std::vector<std::vector<char>> board(50, std::vector<char>(50, ' '));
+    std::vector<std::vector<char>> board(50, std::vector<char>(50, ' ')); //rozmiar planszy
 
-    std::cout << "Ile ma trwac symulacja: ";
-    int ile;
-    std::cin >> ile;
+    std::cout << "Podaj dlugosc: ";
+    int ile;    //ile ma trwac symulacja
+    std::fstream zapis_statystyk; 
+    std::cin >> ile; //dlugosc trwania symualacji
 
     std::vector<animal *> zwierzeta;
 
-    for(int i=0; i<20;i++){
+    for(int i=0; i<21;i++){ //rozlosowanie miejsc startowych i ilosci gatunkow
         int wartosc=losowe();
         int start1=start(), start2=start();
        while (board[start1][start2] != ' ')
@@ -71,12 +75,19 @@ void board()
 
         board[start1][start2]=zwierzeta[i]->getZnak();
     }
+    int ilosc_x_start=count_if(zwierzeta.begin(), zwierzeta.end(), [](animal *a){return a->getZnak()=='x';}); //zapis ilosci zwierzat na poczatku
+    int ilosc_W_start=count_if(zwierzeta.begin(), zwierzeta.end(), [](animal *a){return a->getZnak()=='w';});
+    int ilosc_a_start=count_if(zwierzeta.begin(), zwierzeta.end(), [](animal *a){return a->getZnak()=='a';});
+    int ilosc_B_start=count_if(zwierzeta.begin(), zwierzeta.end(), [](animal *a){return a->getZnak()=='B';});
+    int ilosc_u_start=count_if(zwierzeta.begin(), zwierzeta.end(), [](animal *a){return a->getZnak()=='u';});
+    int ilosc_m_start=count_if(zwierzeta.begin(), zwierzeta.end(), [](animal *a){return a->getZnak()=='m';});
+    int ilosc_z_start=count_if(zwierzeta.begin(), zwierzeta.end(), [](animal *a){return a->getZnak()=='z';});
 
     for(int i = 0; i < ile; i++)
     {
         system("cls");
         std::cout << std::endl;
-        for(int j = 0; j < board.size(); j++)
+        for(int j = 0; j < board.size(); j++)   //wywolanie planszy
         {
             for(int k = 0; k < board[j].size(); k++)
             {
@@ -85,14 +96,14 @@ void board()
             std::cout << std::endl;
         }
 
-        for(int j=0; j<zwierzeta.size(); j++)
-        {
+        for(int j=0; j<zwierzeta.size(); j++) //poruszanie sie zwierzat
+        {  
             auto x = zwierzeta[j]->getX();
             auto y = zwierzeta[j]->getY();
 
             if(x >= 0 && x < 50 && y >= 0 && y < 50)
                 board[zwierzeta[j]->getX()][zwierzeta[j]->getY()] = ' ';
-
+            if(zwierzeta[j]->alive()==true){
             x += poruszanie(zwierzeta[j]);
             y += poruszanie(zwierzeta[j]);
             zwierzeta[j]->setX(x);
@@ -100,14 +111,99 @@ void board()
             if(x >= 0 && x < 50 && y >= 0 && y < 50)
             {
                 board[zwierzeta[j]->getX()][zwierzeta[j]->getY()] = zwierzeta[j]->getZnak();
+            }}
+        }
+        int size=zwierzeta.size();
+        for(int j=0; j<size; j++){
+            for(int k=0; k<size; k++){
+                if(j==k)
+                    continue;
+                if(zwierzeta[j]->getX()==zwierzeta[k]->getX()&&zwierzeta[j]->getY()==zwierzeta[k]->getY()){ //rozmnarzanie sie zwierzat
+                    if(zwierzeta[j]->alive()&&zwierzeta[k]->alive()){
+                    if(zwierzeta[j]->getZnak()==zwierzeta[k]->getZnak()){
+                        switch (zwierzeta[j]->getZnak())
+                        {
+                        case 'a':
+                            zwierzeta.push_back(new ant);
+                            zwierzeta[zwierzeta.size()-1]->setX(zwierzeta[j]->getX());
+                            zwierzeta[zwierzeta.size()-1]->setY(zwierzeta[j]->getY());
+                            break;
+                        case 'x':
+                            zwierzeta.push_back(new woodpacker);
+                            zwierzeta[zwierzeta.size()-1]->setX(zwierzeta[j]->getX());
+                            zwierzeta[zwierzeta.size()-1]->setY(zwierzeta[j]->getY());
+                            break;
+                        case 'm':
+                            zwierzeta.push_back(new moose);
+                            zwierzeta[zwierzeta.size()-1]->setX(zwierzeta[j]->getX());
+                            zwierzeta[zwierzeta.size()-1]->setY(zwierzeta[j]->getY());
+                            break;
+                        case 'u':
+                            zwierzeta.push_back(new deer);
+                            zwierzeta[zwierzeta.size()-1]->setX(zwierzeta[j]->getX());
+                            zwierzeta[zwierzeta.size()-1]->setY(zwierzeta[j]->getY());
+                            break;
+                        case 'w':
+                            zwierzeta.push_back(new wolf);
+                            zwierzeta[zwierzeta.size()-1]->setX(zwierzeta[j]->getX());
+                            zwierzeta[zwierzeta.size()-1]->setY(zwierzeta[j]->getY());
+                            break;
+                        case 'B':
+                            zwierzeta.push_back(new boar);
+                            zwierzeta[zwierzeta.size()-1]->setX(zwierzeta[j]->getX());
+                            zwierzeta[zwierzeta.size()-1]->setY(zwierzeta[j]->getY());
+                            break;
+                        case 'z':
+                            zwierzeta.push_back(new wisent);
+                            zwierzeta[zwierzeta.size()-1]->setX(zwierzeta[j]->getX());
+                            zwierzeta[zwierzeta.size()-1]->setY(zwierzeta[j]->getY());
+                            break;
+                    }
+                    if(zwierzeta[j]->getZnak()=='w'&&zwierzeta[k]->getZnak()=='u'){ //zabijanie zwierzat 
+                        zwierzeta[k]->setAlive(false);}
+                    if(zwierzeta[j]->getZnak()=='w'&&zwierzeta[k]->getZnak()=='z'){
+                        zwierzeta[k]->setAlive(false);}
+                    if(zwierzeta[j]->getZnak()=='w'&&zwierzeta[k]->getZnak()=='B'){
+                        zwierzeta[k]->setAlive(false); }
+                    if(zwierzeta[j]->getZnak()=='x'&&zwierzeta[k]->getZnak()=='a'){
+                        zwierzeta[k]->setAlive(false);}
+                    if(zwierzeta[j]->getZnak()=='B'&&zwierzeta[k]->getZnak()=='a'){
+                        zwierzeta[k]->setAlive(false);
+                    }
+                    }
+
+              
+                }
+
             }
+
         }
         using namespace std::chrono_literals;
-        std::this_thread::sleep_for(200ms);
+        std::this_thread::sleep_for(2ms);
 
-    }
+    }}
     system("pause");
-}
+    int ilosc_x_end=count_if(zwierzeta.begin(), zwierzeta.end(), [](animal *a){return a->getZnak()=='x';}); //zapisywanie ilosci zwierzat na koncu 
+    int ilosc_W_end=count_if(zwierzeta.begin(), zwierzeta.end(), [](animal *a){return a->getZnak()=='w';});
+    int ilosc_a_end=count_if(zwierzeta.begin(), zwierzeta.end(), [](animal *a){return a->getZnak()=='a';});
+    int ilosc_B_end=count_if(zwierzeta.begin(), zwierzeta.end(), [](animal *a){return a->getZnak()=='B';});
+    int ilosc_u_end=count_if(zwierzeta.begin(), zwierzeta.end(), [](animal *a){return a->getZnak()=='u';});
+    int ilosc_m_end=count_if(zwierzeta.begin(), zwierzeta.end(), [](animal *a){return a->getZnak()=='m';});
+    int ilosc_z_end=count_if(zwierzeta.begin(), zwierzeta.end(), [](animal *a){return a->getZnak()=='z';});
+
+    zapis_statystyk.open("statystyki.txt", std::ios::out | std::ios::app); //wpisywanie statystyk do pliku txt
+    zapis_statystyk<<"Dlugosc symulacji: "<<ile<<std::endl;
+    zapis_statystyk<<"Wilka start: "<<ilosc_W_start<<" Wilk koniec: "<<ilosc_W_end<<std::endl;
+    zapis_statystyk<<"Mysz start: "<<ilosc_m_start<<" mysz koniec: "<<ilosc_m_end<<std::endl;
+    zapis_statystyk<<"Dzieciol start: "<<ilosc_x_start<<" dzeciol koniec: "<<ilosc_x_end<<std::endl;
+    zapis_statystyk<<"Mrowka start: "<<ilosc_a_start<<" mrowka koniec: "<<ilosc_a_end<<std::endl;
+    zapis_statystyk<<"Dzik start: "<<ilosc_B_start<<" dzik koniec: "<<ilosc_B_end<<std::endl;
+    zapis_statystyk<<"Jelen start: "<<ilosc_u_start<<" jelen koniec: "<<ilosc_u_end<<std::endl;
+    zapis_statystyk<<"zubr start: "<<ilosc_z_start<<" zubr koniec: "<<ilosc_z_end<<std::endl;
+    zapis_statystyk<<std::endl;
+
+    zapis_statystyk.close();
+}   
 
 int start()
 {
