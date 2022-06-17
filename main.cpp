@@ -34,7 +34,7 @@ void board()
 
     std::vector<animal *> zwierzeta;
 
-    for(int i=0; i<24;i++){ //rozlosowanie miejsc startowych i ilosci gatunkow
+    for(int i=0; i<30;i++){ //rozlosowanie miejsc startowych i ilosci gatunkow
         int wartosc=losowe();
         int start1=start(), start2=start();
        while (board[start1][start2] != ' ')
@@ -64,8 +64,6 @@ void board()
             break;
         case 7: 
            zwierzeta.push_back(new wolf);
-            break;
-        default:
             break;
         }
         std::cout << zwierzeta[i]->getZnak() << std::endl;
@@ -248,4 +246,5 @@ int main()
 {
     board();
 }
+
 
