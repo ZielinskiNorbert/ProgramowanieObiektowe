@@ -25,7 +25,7 @@ void board();
 
 void board()
 {
-    std::vector<std::vector<char>> board(50, std::vector<char>(50, ' ')); //rozmiar planszy
+    std::vector<std::vector<char>> board(75, std::vector<char>(75, ' ')); //rozmiar planszy
 
     std::cout << "Prosze podac dlugosc symulacji: ";
     int ile;    //ile ma trwac symulacja
@@ -34,7 +34,7 @@ void board()
 
     std::vector<animal *> zwierzeta;
 
-    for(int i=0; i<30;i++){ //rozlosowanie miejsc startowych i ilosci gatunkow
+    for(int i=0; i<25;i++){ //rozlosowanie miejsc startowych i ilosci gatunkow
         int wartosc=losowe();
         int start1=start(), start2=start();
        while (board[start1][start2] != ' ')
@@ -99,14 +99,14 @@ void board()
             auto x = zwierzeta[j]->getX();
             auto y = zwierzeta[j]->getY();
 
-            if(x >= 0 && x < 50 && y >= 0 && y < 50)
+            if(x >= 0 && x < 75 && y >= 0 && y < 75)
                 board[zwierzeta[j]->getX()][zwierzeta[j]->getY()] = ' ';
             if(zwierzeta[j]->alive()==true){
             x += poruszanie(zwierzeta[j]);
             y += poruszanie(zwierzeta[j]);
             zwierzeta[j]->setX(x);
             zwierzeta[j]->setY(y);
-            if(x >= 0 && x < 50 && y >= 0 && y < 50)
+            if(x >= 0 && x < 75 && y >= 0 && y < 75)
             {
                 board[zwierzeta[j]->getX()][zwierzeta[j]->getY()] = zwierzeta[j]->getZnak();
             }}
@@ -217,7 +217,7 @@ int start()
     std::random_device dev;
     std::mt19937 rng(dev());
 
-    std::uniform_int_distribution<std::mt19937::result_type>vektor1(0,49);
+    std::uniform_int_distribution<std::mt19937::result_type>vektor1(0,60);
 
     return vektor1(rng);
 }
